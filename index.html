@@ -2,246 +2,902 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mary Teaches English — Progress Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Автошкола DRIVE — Курган</title>
+  <meta name="description" content="Автошкола «Drive» в Кургане. Категория B (МКПП/АКПП). Теория + практика. Сопровождение в ГИБДД. Запись в группу." />
+
+  <!--
+    ВАЖНО ПРО ФАЙЛЫ:
+    1) ЛОГОТИП положи сюда:  assets/logo.png
+    2) Звук мотора:         assets/drive.mp3
+    3) Образоват. программа:assets/program.pdf
+    4) Лицензия:            assets/license.pdf
+  -->
+
   <style>
     :root{
-      --bg1:#fff3d6;
-      --bg2:#ffe8f1;
-      --ink:#1c1b22;
-      --muted:#5a5a6a;
-      --panel:#ffffff;
-      --stroke:#1c1b22;
-      --pink:#ff4fa3;
-      --blue:#2e7bff;
-      --mint:#2fe6b8;
-      --yellow:#ffd84d;
-      --shadow: 0 14px 0 rgba(28,27,34,.18);
-      --radius:18px;
+      --red:#C0202C;       /* красный из логотипа */
+      --red2:#A61B25;
+      --black:#111111;
+      --gray:#5a5a5a;
+      --line:#e7e7e7;
+      --bg:#ffffff;
+      --bg2:#f7f7f7;
+      --shadow: 0 14px 40px rgba(0,0,0,.10);
+      --radius: 18px;
+      --max: 1120px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      color:var(--ink);
-      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(1100px 520px at 15% -10%, rgba(46,123,255,.22), transparent 55%),
-        radial-gradient(900px 520px at 95% 0%, rgba(255,79,163,.18), transparent 55%),
-        radial-gradient(900px 520px at 60% 110%, rgba(47,230,184,.16), transparent 55%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      min-height:100vh;
+      color:var(--black);
+      background: var(--bg);
+      font: 16px/1.55 Arial, Helvetica, "Helvetica Neue", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      overflow-x:hidden;
     }
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(var(--max), calc(100% - 32px)); margin:0 auto; }
 
-    header{
-      position: sticky;
-      top:0;
-      z-index:10;
-      background: rgba(255,255,255,.72);
+    /* ===== Fixed top nav ===== */
+    .nav{
+      position:fixed; top:0; left:0; right:0;
+      z-index:1000;
+      background: rgba(255,255,255,.92);
       backdrop-filter: blur(10px);
-      border-bottom: 3px solid var(--stroke);
+      border-bottom: 1px solid var(--line);
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
-
-    h1{margin:0;font-size:18px;letter-spacing:.2px;line-height:1.1}
-    .sub{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.35}
-
-    .top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
-    .brand{display:flex;gap:12px;align-items:center;min-width:260px}
-    .logo{
-      width:52px;height:52px;
-      border-radius:16px;
-      border:3px solid var(--stroke);
-      background: conic-gradient(from 210deg, var(--pink), var(--yellow), var(--mint), var(--blue), var(--pink));
-      box-shadow: var(--shadow);
-      position:relative;
-      transform: rotate(-2deg);
-      flex:0 0 auto;
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+      padding:12px 0;
     }
-    .logo:after{
-      content:"✨";
-      position:absolute;
-      right:-10px;
-      top:-12px;
-      font-size:18px;
-      transform: rotate(8deg);
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width: 220px;
+    }
+    .brand img{
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display:block;
+    }
+    .brand .title{
+      font-weight:900;
+      letter-spacing:.3px;
+      color: var(--red);
+      line-height:1.05;
+    }
+    .brand .subtitle{
+      font-size:12px;
+      color: var(--gray);
+      margin-top:2px;
     }
 
-    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:3px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.75));
-      box-shadow: var(--shadow);
-      cursor:pointer;
-      user-select:none;
-      transition: transform .08s ease;
-      font-weight:800;
-      letter-spacing:.2px;
+    .menu{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:center;
     }
-    .btn:active{transform: translateY(2px) scale(.99)}
-    input[type=file]{display:none}
+    .menu a{
+      padding:8px 10px;
+      border-radius:12px;
+      color: var(--black);
+      border:1px solid transparent;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .menu a:hover{
+      border-color: var(--line);
+      background: var(--bg2);
+    }
+
+    .nav-right{
+      display:flex; align-items:center; gap:10px;
+      justify-content:flex-end;
+      min-width: 240px;
+    }
 
     .pill{
-      padding:9px 12px;
-      border:3px solid var(--stroke);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: var(--bg2);
       border-radius:999px;
       font-size:13px;
-      background: rgba(255,255,255,.85);
-      box-shadow: var(--shadow);
+      color: var(--black);
       white-space:nowrap;
-      font-weight:700;
     }
 
-    .hint{margin-top:12px}
-    .note{
-      display:inline-flex;gap:10px;align-items:center;
-      padding:10px 12px;
-      border:3px dashed rgba(28,27,34,.6);
-      border-radius:16px;
-      background: rgba(255,255,255,.65);
-      font-size:13px;
-      color:var(--muted);
-      max-width: 860px;
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      background: var(--red);
+      color:#fff;
+      font-weight:900;
+      border:0;
+      cursor:pointer;
+      transition: .18s ease-in-out;
+      white-space:nowrap;
+      box-shadow: 0 10px 20px rgba(192,32,44,.18);
     }
+    .cta:hover{ background: var(--red2); transform: translateY(-1px); }
+    .cta:active{ transform: translateY(0); }
 
-    code{
-      background: rgba(255,79,163,.12);
-      border:2px solid rgba(28,27,34,.35);
-      padding:2px 7px;
-      border-radius:10px;
-      color: var(--ink);
+    .ghost{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      background: #fff;
+      color: var(--black);
       font-weight:800;
+      border:1px solid var(--line);
+      cursor:pointer;
+      transition:.18s ease-in-out;
+    }
+    .ghost:hover{ background: var(--bg2); transform: translateY(-1px); }
+
+    /* ===== Top driving car animation ===== */
+    .top-lane{
+      position:fixed;
+      left:0; right:0;
+      top:72px;
+      height:52px;
+      z-index:999;
+      pointer-events:none;
+    }
+    .lane-line{
+      position:absolute; left:0; right:0; bottom:10px;
+      height:2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(192,32,44,.55) 20%, rgba(192,32,44,.18) 60%, transparent 100%);
+    }
+    .car{
+      position:absolute;
+      top:2px;
+      left:-180px;
+      width:170px;
+      filter: drop-shadow(0 16px 22px rgba(0,0,0,.18));
+      animation: drive 2.8s ease-in-out 1 both;
+      transform-origin:center;
+    }
+    @keyframes drive{
+      0%{ left:-200px; transform: translateY(0) rotate(-1deg); opacity:0; }
+      10%{ opacity:1; }
+      55%{ transform: translateY(-2px) rotate(0deg); }
+      100%{ left: calc(100% + 200px); transform: translateY(0) rotate(1deg); opacity:0; }
     }
 
-    main{padding: 10px 0 28px}
-    .grid{
+    /* ===== Layout spacing ===== */
+    .spacer{ height: 96px; } /* fixed nav + lane */
+
+    section{ padding: 54px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      margin: 0 0 16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 28px;
+      letter-spacing:-.2px;
+      color: var(--red);
+      font-weight: 900;
+    }
+    .hint{ color: var(--gray); font-size: 13px; }
+
+    /* ===== Hero ===== */
+    header.hero{ padding: 36px 0 12px; }
+    .hero-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap:14px;
-      padding: 6px 16px 0;
-      max-width:1100px;
-      margin:0 auto;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:start;
     }
-
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
-      border:3px solid var(--stroke);
+    .hero-card{
+      background: #fff;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      padding: 26px;
+    }
+    .hero-top{
+      display:flex; align-items:center; gap:16px;
+      margin-bottom: 14px;
+    }
+    .hero-logo{
+      width: 92px; height: 92px;
+      object-fit: contain;
+      display:block;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(26px, 3vw, 44px);
+      line-height:1.06;
+      letter-spacing:-.6px;
+      color: var(--red);
+      font-weight: 900;
+    }
+    .sub{
+      margin:10px 0 0;
+      color: var(--black);
+      font-size: 16px;
+    }
+    .sub .muted{ color: var(--gray); }
+
+    .badges{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin: 18px 0 18px;
+    }
+    .badge{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: var(--bg2);
+      color: var(--black);
+      font-weight:800;
+      font-size:13px;
+    }
+    .hero-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 6px; }
+
+    .note{
+      margin-top:16px;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(192,32,44,.06);
+      border:1px solid rgba(192,32,44,.20);
+      color: var(--black);
+      font-size: 13px;
+    }
+
+    .side{ display:grid; gap:12px; }
+    .mini{
+      background: #fff;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.06);
+    }
+    .mini h3{ margin:0 0 6px; font-size:16px; color: var(--red); font-weight:900; }
+    .mini p{ margin:0; color: var(--black); }
+
+    /* ===== Cards / grids ===== */
+    .grid3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+    .grid2{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; }
+
+    .card{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.06);
+    }
+    .card strong{ display:block; margin-bottom:6px; font-weight:900; color: var(--black); }
+
+    .price{
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing:-.6px;
+      margin: 10px 0 10px;
+      color: var(--black);
+    }
+
+    ul.clean{ margin: 12px 0 0; padding-left: 18px; color: var(--black); }
+    ul.clean li{ margin:7px 0; }
+    .small{ font-size: 12px; color: var(--gray); }
+
+    /* ===== VK reviews ===== */
+    .vk-box{
+      border:1px dashed #cfcfcf;
+      border-radius: 14px;
+      padding: 14px;
+      color: var(--gray);
+      background: var(--bg2);
+    }
+    .vk-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items:start; }
+
+    /* ===== Form ===== */
+    form .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label{ display:block; font-size: 13px; color: var(--gray); margin: 0 0 6px; font-weight:700; }
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid #d9d9d9;
+      background: #fff;
+      color: var(--black);
+      outline:none;
+      font: 16px/1.35 Arial, Helvetica, "Helvetica Neue", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    textarea{ min-height: 96px; resize: vertical; }
+    input:focus, select:focus, textarea:focus{ border-color: rgba(192,32,44,.55); box-shadow: 0 0 0 4px rgba(192,32,44,.12); }
+
+    .form-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; align-items:center; }
+    .ok{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(52,211,153,.35);
+      background: rgba(52,211,153,.12);
+      color: #0f5132;
+      font-weight:800;
+      font-size: 12px;
+    }
+
+    /* ===== Documents buttons ===== */
+    .doc-links{ display:flex; flex-wrap:wrap; gap:10px; }
+
+    /* ===== FAQ ===== */
+    .faq details{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: var(--bg2);
+      padding: 12px 12px;
+      margin: 10px 0;
+    }
+    .faq summary{ cursor:pointer; font-weight:900; color: var(--black); }
+    .faq p{ margin:10px 0 0; color: var(--gray); }
+
+    /* ===== Footer ===== */
+    footer{
+      padding: 28px 0 40px;
+      color: var(--gray);
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    /* ===== Sound prompt ===== */
+    .sound{
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1500;
       display:flex;
-      min-height:104px;
-      overflow:hidden;
-      position:relative;
+      gap:10px;
+      align-items:center;
     }
-    .card:before{
-      content: "PROGRESS";
-      position:absolute;
-      right:-34px;
-      top:10px;
-      transform: rotate(18deg);
-      padding:6px 40px;
-      font-size:11px;
+    .sound button{
+      border:1px solid var(--line);
+      background: #fff;
+      color: var(--black);
+      padding:10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: .18s ease-in-out;
       font-weight:900;
-      letter-spacing:.8px;
-      border:3px solid var(--stroke);
-      background: var(--yellow);
-      box-shadow: 0 8px 0 rgba(28,27,34,.12);
+    }
+    .sound button:hover{ transform: translateY(-1px); background: var(--bg2); }
+    .sound .label{
+      color: var(--gray);
+      font-size: 12px;
+      background: rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      padding:8px 10px;
+      border-radius: 14px;
+      max-width: 240px;
     }
 
-    .left{width:92px;display:flex;align-items:center;justify-content:center;padding:12px}
-    .avatar{
-      width:68px;height:68px;
-      border-radius:16px;
-      border:3px solid var(--stroke);
-      background: linear-gradient(135deg, rgba(46,123,255,.18), rgba(255,79,163,.16));
-      box-shadow: 0 10px 0 rgba(28,27,34,.12);
-      overflow:hidden;
-      display:flex;align-items:center;justify-content:center;
+    /* ===== Responsive ===== */
+    @media (max-width: 980px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .grid3{ grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
+      .vk-row{ grid-template-columns: 1fr; }
+      form .row{ grid-template-columns: 1fr; }
+      .menu{ display:none; }
+      .nav-right{ min-width:auto; }
+      .top-lane{ top:74px; }
+      .spacer{ height: 104px; }
     }
-    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .avatar .fallback{font-size:28px}
-
-    .mid{flex:1;padding:14px 10px 14px 0;display:flex;flex-direction:column;justify-content:center;gap:7px;min-width:0}
-    .name{
-  font-weight:950;
-  font-size:16px;
-  line-height:1.25;
-  white-space:normal;
-  overflow:visible;
-  text-overflow:clip;
-}
-    .meta{color:var(--muted);font-size:13px;font-weight:800}
-
-    .right{min-width:120px;padding:14px 14px 14px 8px;display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
-    .check{font-size:20px;filter: drop-shadow(0 10px 0 rgba(28,27,34,.10))}
-
-    @media (max-width:520px){
-      .card:before{display:none}
-      .right{min-width:100px}
+    @media (max-width: 520px){
+      .brand{ min-width:auto; }
+      .brand img{ width:44px; height:44px; }
+      .hero-top{ align-items:flex-start; }
+      .hero-logo{ width:70px; height:70px; }
+      .pill{ display:none; }
     }
   </style>
 </head>
+
 <body>
-<header>
-    <div class="wrap">
-      <div class="top">
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
+  <!-- ===== Fixed Nav ===== -->
+  <nav class="nav" aria-label="Главное меню">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="На главную">
+        <img src="assets/logo.png" alt="DRIVE автошкола" />
+        <div>
+          <div class="title">DRIVE</div>
+          <div class="subtitle">Автошкола · Курган</div>
+        </div>
+      </a>
+
+      <div class="menu" role="navigation" aria-label="Разделы сайта">
+        <a href="#tariff">Тариф</a>
+        <a href="#instructors">Инструкторы</a>
+        <a href="#documents">Документы</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+      </div>
+
+      <div class="nav-right">
+        <span class="pill">☎ 8 (3522) 55 04 63</span>
+        <a class="cta" href="#signup">Записаться</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Driving car lane (animation) ===== -->
+  <div class="top-lane" aria-hidden="true">
+    <div class="lane-line"></div>
+
+    <!-- Clipart car (SVG) — красная как логотип -->
+    <svg class="car" viewBox="0 0 420 140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#C0202C"/>
+          <stop offset="1" stop-color="#A61B25"/>
+        </linearGradient>
+      </defs>
+      <rect x="86" y="46" rx="26" ry="26" width="250" height="62" fill="url(#g)"/>
+      <path d="M110 48 L165 18 H260 L315 48 Z" fill="rgba(255,255,255,.22)" />
+      <path d="M120 48 L170 22 H250 L300 48 Z" fill="#000" opacity="0.20" />
+      <rect x="138" y="30" width="58" height="22" rx="10" fill="#ffffff" opacity="0.35"/>
+      <rect x="206" y="30" width="66" height="22" rx="10" fill="#ffffff" opacity="0.28"/>
+      <circle cx="140" cy="112" r="22" fill="#111"/>
+      <circle cx="300" cy="112" r="22" fill="#111"/>
+      <circle cx="140" cy="112" r="10" fill="#ffffff" opacity="0.35"/>
+      <circle cx="300" cy="112" r="10" fill="#ffffff" opacity="0.35"/>
+      <rect x="78" y="72" width="16" height="18" rx="6" fill="#111" opacity="0.15"/>
+      <rect x="330" y="72" width="16" height="18" rx="6" fill="#fff" opacity="0.35"/>
+      <text x="210" y="88" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="900" fill="#fff" opacity="0.95">DRIVE</text>
+    </svg>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-card">
+        <div class="hero-top">
+          <img class="hero-logo" src="assets/logo.png" alt="DRIVE автошкола" />
           <div>
-            <h1>Mary Teaches English — Progress Tracker</h1>
-            <div class="sub">CSV: <b>ФИО</b>, <b>задания</b>, <b>аватарка</b> • 1 ✅ за каждые 5 заданий</div>
+            <h1>Автошкола DRIVE<br/>в Кургане</h1>
+            <p class="sub"><span class="muted">Категория</span> <b>B</b> · <span class="muted">теория + практика</span> · <span class="muted">сопровождение в ГИБДД</span></p>
           </div>
         </div>
 
-        <div class="controls">
-          <label class="btn" for="csvFile">📄 Загрузить CSV</label>
-          <input id="csvFile" type="file" accept=".csv,text/csv" />
-          <div id="stats" class="pill">Файл не загружен</div>
+        <div class="badges">
+          <span class="badge">Постоянный набор в группы</span>
+          <span class="badge">Теория: очно + онлайн</span>
+          <span class="badge">Рассрочка на 3 месяца</span>
+        </div>
+
+        <div class="hero-actions">
+          <a class="cta" href="#signup">Записаться на орг. собрание</a>
+          <a class="ghost" href="https://vk.com/driveschool45" target="_blank" rel="noopener">Мы в VK</a>
+          <a class="ghost" href="mailto:driveschool45@mail.ru">Почта</a>
+        </div>
+
+        <div class="note">
+          <b>Важно:</b> требуется предварительная запись на организационное собрание — подробности в VK сообщества.
         </div>
       </div>
 
-      <div class="hint">
-        <div class="note">💡 Пример строки: <code>Иванова Мария,12,images/maria.jpg</code> (или URL вместо пути). Если аватарки нет — покажу 🎓.</div>
+      <div class="side">
+        <div class="mini">
+          <h3>Категория B (МКПП / АКПП)</h3>
+          <p>Легковой автомобиль с механической или автоматической коробкой передач.</p>
+        </div>
+        <div class="mini">
+          <h3>Единый номер</h3>
+          <p><b>8 (3522) 55 04 63</b></p>
+        </div>
+        <div class="mini">
+          <h3>Запись быстрее всего</h3>
+          <p>Через сообщения VK: <b>@driveschool45</b></p>
+        </div>
       </div>
     </div>
   </header>
-<main>
-  <div id="grid" class="grid"></div>
-</main>
-<script>
-const fileInput=document.getElementById('csvFile');
-const grid=document.getElementById('grid');
-const stats=document.getElementById('stats');
-// 🔹 автозагрузка CSV из папки проекта
-window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const res = await fetch('progress.csv');
-    if (!res.ok) throw new Error('CSV not found');
-    const text = await res.text();
-    const rows = parseCSV(text);
-    const students = rowsToStudents(rows);
-    render(students);
-  } catch (e) {
-    stats.textContent = 'CSV не найден';
-  }
-});
 
-// 🔹 ручная загрузка CSV (опционально)
-fileInput.addEventListener('change', async (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-  const text = await file.text();
-  const rows = parseCSV(text);
-  const students = rowsToStudents(rows);
-  render(students);
-});const r=parseCSV(t);render(toStudents(r));});
-function parseCSV(t){return t.split(/\r?\n/).filter(l=>l.trim()).map(l=>l.split(','));}
-function toStudents(r){const h=r[0].map(x=>x.trim().toLowerCase());const n=h.indexOf('фио');const z=h.indexOf('задания');const a=h.indexOf('аватарка');return r.slice(1).map(x=>({name:x[n],tasks:parseInt(x[z])||0,avatar:x[a]}));}
-function render(s){grid.innerHTML='';stats.textContent=`Учеников: ${s.length}`;s.forEach(x=>grid.append(card(x)));}
-function card(s){const c=document.createElement('div');c.className='card';c.innerHTML=`<div class='left'><div class='avatar'>${s.avatar?`<img src='${s.avatar}'>`:'🎓'}</div></div><div class='mid'><div class='name'>${s.name}</div><div class='meta'>${s.tasks} заданий</div></div><div class='right'>${'✅'.repeat(Math.floor(s.tasks/5))||'<span class="meta">—</span>'}</div>`;return c;}
-</script>
+  <!-- ===== Tariff ===== -->
+  <section id="tariff">
+    <div class="container">
+      <div class="section-title">
+        <h2>Тариф обучения</h2>
+        <div class="hint">обновлено: стоимость 60 000 ₽</div>
+      </div>
+
+      <div class="card">
+        <strong>Категория B · МКПП / АКПП</strong>
+        <div class="small">Обучение проводится по программе, согласованной с ГИБДД.</div>
+        <div class="price">60 000 ₽</div>
+        <ul class="clean">
+          <li>Теория: 132 академических часа (очно + онлайн)</li>
+          <li>Практика: 56 (54) часов*</li>
+          <li>Автодром, ГСМ</li>
+          <li>Возможность оплатить в рассрочку</li>
+          <li>Пересдача внутришкольного экзамена (теория, практика)</li>
+          <li>Сопровождение на экзамен ГИБДД</li>
+        </ul>
+        <p class="small" style="margin-top:12px;">
+          * 1 час = 60 минут: по процессу обучения вождения — 28 встреч по 120 минут (МКПП) или 27 встреч по 120 минут (АКПП).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Instructors ===== -->
+  <section id="instructors">
+    <div class="container">
+      <div class="section-title">
+        <h2>Наши инструкторы</h2>
+        <div class="hint">стаж вождения ≥ 10 лет</div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <strong>Александр Салтыков</strong>
+          <div class="small">Инструктор · стаж преподавания 7 лет</div>
+          <ul class="clean"><li>LADA KALINA (МКПП)</li></ul>
+        </div>
+        <div class="card">
+          <strong>Виктор Глауб</strong>
+          <div class="small">Инструктор · стаж преподавания 7 лет</div>
+          <ul class="clean"><li>LADA KALINA (МКПП)</li></ul>
+        </div>
+        <div class="card">
+          <strong>Юрий Корниенко</strong>
+          <div class="small">Инструктор · стаж преподавания 2 года</div>
+          <ul class="clean">
+            <li>LADA KALINA (МКПП)</li>
+            <li>HYUNDAI SOLARIS (АКПП)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Коротина Дарья</strong>
+          <div class="small">Инструктор · стаж преподавания более 10 лет</div>
+          <ul class="clean"><li>HYUNDAI SOLARIS (МКПП)</li></ul>
+        </div>
+        <div class="card">
+          <strong>Степанова Ульяна</strong>
+          <div class="small">Инструктор · стаж преподавания 1 год</div>
+          <ul class="clean"><li>LADA GRANTA (МКПП)</li></ul>
+        </div>
+        <div class="card">
+          <strong>Бабушкин Вячеслав</strong>
+          <div class="small">Инструктор · стаж преподавания более 10 лет</div>
+          <ul class="clean"><li>LADA GRANTA (МКПП)</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Documents (PDF placeholders) ===== -->
+  <section id="documents">
+    <div class="container">
+      <div class="section-title">
+        <h2>Документы</h2>
+        <div class="hint">сюда загрузишь PDF: программа + лицензия</div>
+      </div>
+
+      <div class="card">
+        <strong>Скачать PDF</strong>
+        <div class="doc-links" style="margin-top:10px;">
+          <a class="cta" href="assets/program.pdf" target="_blank" rel="noopener">Образовательная программа (PDF)</a>
+          <a class="ghost" href="assets/license.pdf" target="_blank" rel="noopener">Лицензия (PDF)</a>
+        </div>
+        <p class="small" style="margin-top:12px;">
+          Положи файлы в папку <b>assets</b> и назови: <b>program.pdf</b> и <b>license.pdf</b>. Можно заменить названия — тогда поправь ссылки в коде.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Reviews from VK ===== -->
+  <section id="reviews">
+    <div class="container">
+      <div class="section-title">
+        <h2>Отзывы из VK</h2>
+        <div class="hint">виджеты VK (без ручной перепечатки)</div>
+      </div>
+
+      <div class="vk-row">
+        <div class="card">
+          <strong>Посты-отзывы (рекомендуется)</strong>
+          <div class="small">Вставь 2–4 конкретных поста с отзывами — будут показываться прямо здесь.</div>
+          <div class="vk-box" style="margin-top:12px;">
+            <div id="vk_post_1"></div>
+            <div style="height:12px"></div>
+            <div id="vk_post_2"></div>
+            <div class="small" style="margin-top:10px;">Нужно заменить ID в блоке “VK SETTINGS” ниже.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <strong>Виджет сообщества</strong>
+          <div class="small">Покажем блок сообщества + кнопку “Написать”.</div>
+          <div class="vk-box" style="margin-top:12px;">
+            <div id="vk_group"></div>
+            <div style="margin-top:10px;">
+              <a class="cta" href="https://vk.me/driveschool45" target="_blank" rel="noopener">Написать в VK</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Signup form ===== -->
+  <section id="signup">
+    <div class="container">
+      <div class="section-title">
+        <h2>Запись на занятия</h2>
+        <div class="hint">после отправки — переход в сообщения VK</div>
+      </div>
+
+      <div class="card">
+        <form id="leadForm">
+          <div class="row">
+            <div>
+              <label for="name">Имя</label>
+              <input id="name" name="name" placeholder="Например: Марина" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="phone">Телефон</label>
+              <input id="phone" name="phone" placeholder="+7 ___ ___-__-__" autocomplete="tel" required />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:12px;">
+            <div>
+              <label for="gear">Коробка</label>
+              <select id="gear" name="gear">
+                <option>МКПП</option>
+                <option>АКПП</option>
+                <option>Пока не знаю</option>
+              </select>
+            </div>
+            <div>
+              <label for="contact">Как связаться?</label>
+              <select id="contact" name="contact">
+                <option>VK сообщения</option>
+                <option>Телефонный звонок</option>
+                <option>WhatsApp/Telegram</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label for="msg">Комментарий (необязательно)</label>
+            <textarea id="msg" name="msg" placeholder="Например: хочу ближайшую группу / есть опыт / удобное время"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="cta" type="submit">Оставить заявку и перейти в VK</button>
+            <button class="ghost" type="button" id="copyBtn">Скопировать текст заявки</button>
+            <span class="ok" id="copied" style="display:none;">Скопировано ✅</span>
+          </div>
+
+          <div class="small" style="margin-top:10px;">
+            Нажимая кнопку, вы даёте согласие на обработку персональных данных.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-title">
+        <h2>FAQ</h2>
+        <div class="hint">частые вопросы</div>
+      </div>
+
+      <div class="faq">
+        <details>
+          <summary>Как проходит обучение?</summary>
+          <p>Сначала вы проходите мед. комиссию. Затем параллельно проходят теория и практика. После часов обучения вы сдаёте экзамены в автошколе, затем — в ГИБДД.</p>
+        </details>
+        <details>
+          <summary>Можно сдавать экзамен в ГИБДД с вами, если учился(-лась) в другой автошколе?</summary>
+          <p>Да. Можно пройти дополнительную подготовку и выйти на госэкзамен в составе организованной группы. Детали уточняйте по телефону.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contacts ===== -->
+  <section id="contacts">
+    <div class="container">
+      <div class="section-title">
+        <h2>Контакты</h2>
+        <div class="hint">как добраться и где писать</div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <strong>Автошкола DRIVE</strong>
+          <div class="small">Улица Кирова, 98/II</div>
+          <div style="height:10px"></div>
+          <div><b>Телефон:</b> 8 (3522) 55 04 63</div>
+          <div><b>Почта:</b> driveschool45@mail.ru</div>
+          <div><b>VK:</b> <a href="https://vk.com/driveschool45" target="_blank" rel="noopener" style="color:var(--red);font-weight:900;">vk.com/driveschool45</a></div>
+          <div style="height:10px"></div>
+          <div class="small">Режим работы: ежедневно с 10:00 до 17:00</div>
+        </div>
+
+        <div class="card">
+          <strong>Автодром</strong>
+          <div class="small">Категория B: Курган, пр. Машиностроителей 31А</div>
+          <div style="height:10px"></div>
+          <a class="ghost" href="https://2gis.ru/kurgan" target="_blank" rel="noopener">Открыть на карте (2ГИС)</a>
+          <div class="small" style="margin-top:10px;">Если нужно — вставим карту iframe (лучше после домена/HTTPS).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;">
+        <div>© <span id="y"></span> Автошкола DRIVE · Курган</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <a class="ghost" href="#top">Наверх</a>
+          <a class="cta" href="https://vk.me/driveschool45" target="_blank" rel="noopener">Написать в VK</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Audio (engine) =====
+       ВАЖНО: автозвук блокируется браузерами.
+       1) пробуем проиграть при загрузке
+       2) если нельзя — показываем кнопку "Включить звук"
+       Положи mp3 сюда: ./assets/drive.mp3
+  -->
+  <audio id="engine" preload="auto">
+    <source src="assets/drive.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="sound" id="soundUI" style="display:none;">
+    <div class="label">Звук заблокирован браузером. Нажми “Включить звук”.</div>
+    <button id="enableSound">Включить звук 🔊</button>
+  </div>
+
+  <!-- VK widgets -->
+  <script src="https://vk.com/js/api/openapi.js?169"></script>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    $("#y").textContent = new Date().getFullYear();
+
+    // Smooth scroll
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute("href");
+      const el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    // Sound
+    const engine = $("#engine");
+    const soundUI = $("#soundUI");
+    const enableSoundBtn = $("#enableSound");
+
+    async function tryPlaySound(){
+      if (!engine) return;
+      engine.volume = 0.55;
+      try{
+        await engine.play();
+        soundUI.style.display = "none";
+      }catch(err){
+        soundUI.style.display = "flex";
+      }
+    }
+    window.addEventListener("load", () => {
+      tryPlaySound();
+    });
+    enableSoundBtn?.addEventListener("click", async () => {
+      try{ await engine.play(); soundUI.style.display = "none"; }catch(e){}
+    });
+
+    // ===== VK SETTINGS =====
+    const VK_GROUP_ID = 0; // TODO: числовой ID сообщества
+    const VK_OWNER_ID = 0; // TODO: -VK_GROUP_ID
+    const VK_POST_1 = 0;   // TODO: id поста-отзыва 1
+    const VK_POST_2 = 0;   // TODO: id поста-отзыва 2
+
+    window.addEventListener("load", () => {
+      if (window.VK && VK && VK.Widgets){
+        if (VK_GROUP_ID && VK_GROUP_ID !== 0){
+          VK.Widgets.Group(
+            "vk_group",
+            {mode: 3, width: "auto", height: 220, color1: "FFFFFF", color2: "111111", color3: "C0202C"},
+            VK_GROUP_ID
+          );
+        }else{
+          const box = document.getElementById("vk_group");
+          if (box) box.innerHTML = '<div style="color:#5a5a5a;">Задай <b>VK_GROUP_ID</b> в коде, и здесь появится виджет сообщества.</div>';
+        }
+
+        if (VK_OWNER_ID && VK_POST_1){
+          VK.Widgets.Post("vk_post_1", VK_OWNER_ID, VK_POST_1, {width: "auto"});
+        }else{
+          const box = document.getElementById("vk_post_1");
+          if (box) box.innerHTML = '<div style="color:#5a5a5a;">Вставь <b>VK_OWNER_ID</b> и <b>VK_POST_1</b> (см. комментарии в коде).</div>';
+        }
+        if (VK_OWNER_ID && VK_POST_2){
+          VK.Widgets.Post("vk_post_2", VK_OWNER_ID, VK_POST_2, {width: "auto"});
+        }else{
+          const box = document.getElementById("vk_post_2");
+          if (box) box.innerHTML = '<div style="color:#5a5a5a;">Вставь <b>VK_OWNER_ID</b> и <b>VK_POST_2</b> — будет второй отзыв.</div>';
+        }
+      }
+    });
+
+    // Form -> VK
+    function buildLeadText(data){
+      const lines = [
+        "Здравствуйте! Хочу записаться в автошколу DRIVE.",
+        `Имя: ${data.name}`,
+        `Телефон: ${data.phone}`,
+        `Коробка: ${data.gear}`,
+        `Связь: ${data.contact}`,
+      ];
+      if (data.msg?.trim()) lines.push(`Комментарий: ${data.msg.trim()}`);
+      lines.push("Подскажите ближайшее орг. собрание/группу 🙂");
+      return lines.join("
+");
+    }
+
+    async function copyText(text){
+      try{ await navigator.clipboard.writeText(text); return true; }
+      catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        return ok;
+      }
+    }
+
+    const form = $("#leadForm");
+    const copyBtn = $("#copyBtn");
+    const copied = $("#copied");
+
+    function collectForm(){
+      return {
+        name: $("#name").value.trim(),
+        phone: $("#phone").value.trim(),
+        gear: $("#gear").value,
+        contact: $("#contact").value,
+        msg: $("#msg").value
+      };
+    }
+
+    copyBtn?.addEventListener("click", async () => {
+      const text = buildLeadText(collectForm());
+      const ok = await copyText(text);
+      copied.style.display = ok ? "inline-flex" : "none";
+      setTimeout(() => copied.style.display = "none", 1400);
+    });
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = collectForm();
+      if (!data.name || !data.phone){ alert("Пожалуйста, укажите имя и телефон."); return; }
+      await copyText(buildLeadText(data));
+      window.open("https://vk.me/driveschool45", "_blank", "noopener");
+      copied.style.display = "inline-flex";
+      setTimeout(() => copied.style.display = "none", 1600);
+    });
+  </script>
 </body>
 </html>
